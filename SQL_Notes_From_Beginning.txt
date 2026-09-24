@@ -1,0 +1,855 @@
+SQL NOTES — FROM BEGINNING TO GROUP BY & HAVING
+========================================================
+
+Database used in practice: MySQL
+Table used in practice: employee
+
+--------------------------------------------------------
+1. SQL BASICS
+--------------------------------------------------------
+
+SQL = Structured Query Language.
+
+SQL is used to communicate with relational databases.
+
+Database:
+    A collection of organized data.
+
+Table:
+    Stores data in rows and columns.
+
+Column:
+    Describes an attribute/field.
+
+Row:
+    Represents one record.
+
+Example employee table:
+
+    empno | ename | job | salary | hiredate
+    ------+-------+-----+--------+----------
+    101   | Ravi  | Developer | 45000 | 2026-01-15
+
+
+--------------------------------------------------------
+2. CREATE DATABASE
+--------------------------------------------------------
+
+SYNTAX:
+    CREATE DATABASE database_name;
+
+EXAMPLE:
+    CREATE DATABASE company;
+
+CONDITION / WHEN TO USE:
+    - Used to create a new database.
+    - Database name must be unique unless IF NOT EXISTS is used.
+
+OPTIONAL:
+    CREATE DATABASE IF NOT EXISTS company;
+
+
+--------------------------------------------------------
+3. USE DATABASE
+--------------------------------------------------------
+
+SYNTAX:
+    USE database_name;
+
+EXAMPLE:
+    USE company;
+
+CONDITION / WHEN TO USE:
+    - Selects the database you want to work with.
+    - Usually done before creating or querying tables.
+
+
+--------------------------------------------------------
+4. SHOW DATABASES
+--------------------------------------------------------
+
+SYNTAX:
+    SHOW DATABASES;
+
+EXAMPLE:
+    SHOW DATABASES;
+
+CONDITION / WHEN TO USE:
+    - Shows the databases available in MySQL.
+
+
+--------------------------------------------------------
+5. CREATE TABLE
+--------------------------------------------------------
+
+SYNTAX:
+    CREATE TABLE table_name (
+        column1 datatype,
+        column2 datatype,
+        column3 datatype
+    );
+
+EXAMPLE:
+    CREATE TABLE employee (
+        empno INT,
+        ename VARCHAR(50),
+        job VARCHAR(50),
+        salary DECIMAL(10,2),
+        hiredate DATE
+    );
+
+CONDITION / WHEN TO USE:
+    - Used to create a new table.
+    - Every column needs a name and data type.
+    - The table structure is created before inserting data.
+
+
+COMMON DATA TYPES:
+    INT                 Whole numbers
+    VARCHAR(n)          Variable-length text
+    DECIMAL(p,s)        Decimal numbers
+    DATE                Date values
+
+
+--------------------------------------------------------
+6. DESCRIBE / DESC TABLE
+--------------------------------------------------------
+
+SYNTAX:
+    DESCRIBE table_name;
+
+OR:
+    DESC table_name;
+
+EXAMPLE:
+    DESCRIBE employee;
+
+CONDITION / WHEN TO USE:
+    - Shows the structure of a table.
+    - Useful for checking column names, data types, keys, etc.
+
+
+--------------------------------------------------------
+7. PRIMARY KEY
+--------------------------------------------------------
+
+A primary key uniquely identifies each row in a table.
+
+SYNTAX (AFTER TABLE CREATION):
+    ALTER TABLE table_name
+    ADD PRIMARY KEY (column_name);
+
+EXAMPLE:
+    ALTER TABLE employee
+    ADD PRIMARY KEY (empno);
+
+CONDITION / WHEN TO USE:
+    - Use when a column uniquely identifies every row.
+    - Primary key values cannot be duplicated.
+    - A primary key cannot contain NULL values.
+
+
+--------------------------------------------------------
+8. INSERT
+--------------------------------------------------------
+
+Used to add new rows to a table.
+
+SYNTAX:
+    INSERT INTO table_name
+    (column1, column2, column3)
+    VALUES
+    (value1, value2, value3);
+
+EXAMPLE:
+    INSERT INTO employee
+    (empno, ename, job, salary, hiredate)
+    VALUES
+    (101, 'Ravi', 'Developer', 45000, '2026-01-15');
+
+CONDITIONS:
+    - Text values are written inside quotes.
+    - DATE values use the standard format 'YYYY-MM-DD'.
+    - Numeric values normally do not need quotes.
+    - Values must match the corresponding columns.
+
+
+INSERT MULTIPLE ROWS:
+
+SYNTAX:
+    INSERT INTO table_name
+    (column1, column2)
+    VALUES
+    (value1, value2),
+    (value3, value4);
+
+EXAMPLE:
+    INSERT INTO employee
+    (empno, ename, job, salary, hiredate)
+    VALUES
+    (102, 'Priya', 'Tester', 40000, '2025-10-10'),
+    (103, 'Arjun', 'Manager', 70000, '2024-05-20');
+
+
+--------------------------------------------------------
+9. DATE VALUES
+--------------------------------------------------------
+
+STANDARD MYSQL DATE FORMAT:
+    'YYYY-MM-DD'
+
+EXAMPLE:
+    '2026-09-23'
+
+INSERT EXAMPLE:
+    INSERT INTO employee (empno, ename, hiredate)
+    VALUES (106, 'Ravi', '2026-09-23');
+
+CONDITION:
+    - For a DATE column, use YYYY-MM-DD.
+    - Example:
+        23-09-2026  ->  '2026-09-23'
+
+
+--------------------------------------------------------
+10. SELECT
+--------------------------------------------------------
+
+Used to retrieve/read data.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name;
+
+EXAMPLE:
+    SELECT ename, salary
+    FROM employee;
+
+CONDITION:
+    - Use SELECT when you want to read data.
+    - Use * to select all columns.
+
+SELECT ALL COLUMNS:
+    SELECT * FROM employee;
+
+SELECT SPECIFIC COLUMNS:
+    SELECT ename, job
+    FROM employee;
+
+
+--------------------------------------------------------
+11. WHERE
+--------------------------------------------------------
+
+Used to filter rows based on a condition.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    WHERE condition;
+
+EXAMPLES:
+
+    SELECT *
+    FROM employee
+    WHERE ename = 'Ravi';
+
+    SELECT *
+    FROM employee
+    WHERE salary = 40000;
+
+    SELECT *
+    FROM employee
+    WHERE job = 'Developer';
+
+CONDITIONS:
+    - WHERE filters individual rows.
+    - Text values require quotes.
+    - Numeric values normally do not require quotes.
+
+
+--------------------------------------------------------
+12. COMPARISON OPERATORS
+--------------------------------------------------------
+
+    =       Equal to
+    >       Greater than
+    <       Less than
+    >=      Greater than or equal to
+    <=      Less than or equal to
+    <>      Not equal to
+    !=      Not equal to (also supported by MySQL)
+
+EXAMPLES:
+
+    SELECT *
+    FROM employee
+    WHERE salary > 45000;
+
+    SELECT *
+    FROM employee
+    WHERE salary < 50000;
+
+    SELECT *
+    FROM employee
+    WHERE salary >= 50000;
+
+    SELECT *
+    FROM employee
+    WHERE salary <= 50000;
+
+    SELECT *
+    FROM employee
+    WHERE job <> 'Developer';
+
+CONDITION:
+    - Use comparison operators inside WHERE or other appropriate conditions.
+    - Do NOT write "NOT =" for not equal.
+    - Use <> or != instead.
+
+
+--------------------------------------------------------
+13. AND
+--------------------------------------------------------
+
+Used when ALL specified conditions must be true.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    WHERE condition1
+    AND condition2;
+
+EXAMPLE:
+    SELECT *
+    FROM employee
+    WHERE job = 'Developer'
+    AND salary > 45000;
+
+MEANING:
+    Both conditions must be true.
+
+
+--------------------------------------------------------
+14. OR
+--------------------------------------------------------
+
+Used when at least one condition must be true.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    WHERE condition1
+    OR condition2;
+
+EXAMPLE:
+    SELECT *
+    FROM employee
+    WHERE job = 'Developer'
+    OR job = 'Manager';
+
+MEANING:
+    At least one condition must be true.
+
+
+--------------------------------------------------------
+15. ORDER BY
+--------------------------------------------------------
+
+Used to sort query results.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    ORDER BY column_name;
+
+EXAMPLE:
+    SELECT *
+    FROM employee
+    ORDER BY salary;
+
+DEFAULT:
+    ASC (ascending)
+
+EXPLICIT ASC:
+    SELECT *
+    FROM employee
+    ORDER BY salary ASC;
+
+DESCENDING:
+    SELECT *
+    FROM employee
+    ORDER BY salary DESC;
+
+CONDITIONS:
+    - ASC = lowest/smallest to highest/largest.
+    - DESC = highest/largest to lowest/smallest.
+    - ORDER BY comes after WHERE.
+
+
+--------------------------------------------------------
+16. WHERE + ORDER BY
+--------------------------------------------------------
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    WHERE condition
+    ORDER BY column_name;
+
+EXAMPLE:
+    SELECT *
+    FROM employee
+    WHERE job = 'Developer'
+    ORDER BY salary DESC;
+
+MEANING:
+    1. Select Developers.
+    2. Sort them by salary from highest to lowest.
+
+
+--------------------------------------------------------
+17. LIMIT
+--------------------------------------------------------
+
+Used to restrict the number of rows returned.
+
+SYNTAX:
+    SELECT columns
+    FROM table_name
+    ORDER BY column_name
+    LIMIT number;
+
+EXAMPLES:
+
+    SELECT *
+    FROM employee
+    ORDER BY salary DESC
+    LIMIT 1;
+
+    SELECT *
+    FROM employee
+    ORDER BY salary ASC
+    LIMIT 2;
+
+CONDITION:
+    - LIMIT should usually be combined with ORDER BY when asking for
+      "top" or "bottom" records.
+    - Example: highest-paid employee = ORDER BY salary DESC LIMIT 1.
+
+
+--------------------------------------------------------
+18. UPDATE
+--------------------------------------------------------
+
+Used to modify existing data.
+
+SYNTAX:
+    UPDATE table_name
+    SET column = new_value
+    WHERE condition;
+
+EXAMPLE:
+    UPDATE employee
+    SET salary = 50000
+    WHERE empno = 101;
+
+UPDATE MULTIPLE COLUMNS:
+
+    UPDATE employee
+    SET job = 'Senior Manager',
+        salary = 80000
+    WHERE empno = 102;
+
+CONDITIONS:
+    - WHERE determines which rows are changed.
+    - Always check the WHERE condition carefully.
+    - Without WHERE, all matching table rows are updated.
+    - MySQL Workbench Safe Update Mode may require a key column in WHERE.
+
+
+--------------------------------------------------------
+19. DELETE
+--------------------------------------------------------
+
+Used to remove rows.
+
+SYNTAX:
+    DELETE FROM table_name
+    WHERE condition;
+
+EXAMPLE:
+    DELETE FROM employee
+    WHERE empno = 105;
+
+CONDITIONS:
+    - WHERE determines which rows are deleted.
+    - DELETE FROM employee; deletes all rows from the table.
+    - Be especially careful before executing DELETE.
+
+
+--------------------------------------------------------
+20. CRUD
+--------------------------------------------------------
+
+CRUD means:
+
+    C = Create/Add      -> INSERT
+    R = Read             -> SELECT
+    U = Update           -> UPDATE
+    D = Delete           -> DELETE
+
+Examples:
+
+    INSERT INTO employee ...;
+    SELECT * FROM employee;
+    UPDATE employee SET ... WHERE ...;
+    DELETE FROM employee WHERE ...;
+
+
+--------------------------------------------------------
+21. AGGREGATE FUNCTIONS
+--------------------------------------------------------
+
+Aggregate functions perform calculations on multiple rows.
+
+COUNT()
+    Counts rows.
+
+SUM()
+    Calculates total.
+
+AVG()
+    Calculates average.
+
+MAX()
+    Finds maximum/highest value.
+
+MIN()
+    Finds minimum/lowest value.
+
+
+COUNT():
+
+SYNTAX:
+    SELECT COUNT(column_or_*)
+    FROM table_name;
+
+EXAMPLE:
+    SELECT COUNT(*) AS total_employees
+    FROM employee;
+
+
+MAX():
+
+    SELECT MAX(salary) AS highest_salary
+    FROM employee;
+
+
+MIN():
+
+    SELECT MIN(salary) AS lowest_salary
+    FROM employee;
+
+
+AVG():
+
+    SELECT AVG(salary) AS average_salary
+    FROM employee;
+
+
+SUM():
+
+    SELECT SUM(salary) AS total_salary
+    FROM employee;
+
+CONDITIONS:
+    - Aggregate functions usually return one result for the whole table
+      when GROUP BY is not used.
+    - COUNT(*) counts rows.
+    - SUM/AVG/MAX/MIN are commonly used with numeric columns.
+
+
+--------------------------------------------------------
+22. AS (ALIASES)
+--------------------------------------------------------
+
+Used to give a temporary name to a column or calculated result.
+
+SYNTAX:
+    SELECT column_name AS alias_name
+    FROM table_name;
+
+EXAMPLE:
+    SELECT AVG(salary) AS average_salary
+    FROM employee;
+
+CONDITION:
+    - The alias improves readability of query output.
+    - It does NOT permanently rename the table column.
+
+
+--------------------------------------------------------
+23. GROUP BY
+--------------------------------------------------------
+
+Used to divide rows into groups and perform aggregate calculations
+for each group.
+
+SYNTAX:
+    SELECT grouping_column, AGGREGATE_FUNCTION(column)
+    FROM table_name
+    GROUP BY grouping_column;
+
+EXAMPLE:
+    SELECT job, COUNT(*) AS employee_count
+    FROM employee
+    GROUP BY job;
+
+MEANING:
+    Group employees by job, then count employees in each job group.
+
+
+MORE EXAMPLES:
+
+AVERAGE SALARY BY JOB:
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    GROUP BY job;
+
+MAXIMUM SALARY BY JOB:
+    SELECT job, MAX(salary) AS maximum_salary
+    FROM employee
+    GROUP BY job;
+
+TOTAL SALARY BY JOB:
+    SELECT job, SUM(salary) AS total_salary
+    FROM employee
+    GROUP BY job;
+
+CONDITION:
+    - GROUP BY is commonly used with aggregate functions.
+    - It produces one result row per group.
+
+
+--------------------------------------------------------
+24. HAVING
+--------------------------------------------------------
+
+Used to filter groups after GROUP BY.
+
+SYNTAX:
+    SELECT grouping_column, AGGREGATE_FUNCTION(column)
+    FROM table_name
+    GROUP BY grouping_column
+    HAVING aggregate_condition;
+
+EXAMPLE:
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    GROUP BY job
+    HAVING AVG(salary) > 50000;
+
+MEANING:
+    Group employees by job, calculate average salary for each job,
+    then keep only groups whose average salary is greater than 50000.
+
+
+MORE EXAMPLES:
+
+    SELECT job, MAX(salary) AS maximum_salary
+    FROM employee
+    GROUP BY job
+    HAVING MAX(salary) > 60000;
+
+    SELECT job, COUNT(*) AS employee_count
+    FROM employee
+    GROUP BY job
+    HAVING COUNT(*) > 1;
+
+    SELECT job, SUM(salary) AS total_salary
+    FROM employee
+    GROUP BY job
+    HAVING SUM(salary) > 100000;
+
+
+--------------------------------------------------------
+25. WHERE VS HAVING
+--------------------------------------------------------
+
+WHERE:
+    Filters individual rows BEFORE grouping.
+
+HAVING:
+    Filters groups AFTER grouping.
+
+Example using WHERE:
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    WHERE salary > 40000
+    GROUP BY job;
+
+Meaning:
+    1. Remove employees whose salary is <= 40000.
+    2. Group remaining employees by job.
+    3. Calculate average salary for each job.
+
+
+Example using HAVING:
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    GROUP BY job
+    HAVING AVG(salary) > 50000;
+
+Meaning:
+    1. Group employees by job.
+    2. Calculate average salary.
+    3. Keep only job groups whose average is > 50000.
+
+
+WHERE + GROUP BY + HAVING:
+
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    WHERE job = 'Developer'
+    GROUP BY job
+    HAVING AVG(salary) > 50000;
+
+Meaning:
+    1. Keep only Developers.
+    2. Group them by job.
+    3. Calculate their average salary.
+    4. Keep the group only if average salary > 50000.
+
+
+--------------------------------------------------------
+26. SQL CLAUSE ORDER
+--------------------------------------------------------
+
+A common SELECT query structure is:
+
+    SELECT
+    FROM
+    WHERE
+    GROUP BY
+    HAVING
+    ORDER BY
+    LIMIT
+
+Example:
+
+    SELECT job, AVG(salary) AS avg_salary
+    FROM employee
+    WHERE salary > 40000
+    GROUP BY job
+    HAVING AVG(salary) > 50000
+    ORDER BY avg_salary DESC
+    LIMIT 3;
+
+IMPORTANT:
+    - Not every query needs every clause.
+    - When multiple clauses are used, their syntax order matters.
+
+
+--------------------------------------------------------
+27. QUICK REFERENCE
+--------------------------------------------------------
+
+CREATE DATABASE:
+    CREATE DATABASE company;
+
+USE:
+    USE company;
+
+CREATE TABLE:
+    CREATE TABLE employee (...);
+
+DESCRIBE:
+    DESC employee;
+
+PRIMARY KEY:
+    ALTER TABLE employee
+    ADD PRIMARY KEY (empno);
+
+INSERT:
+    INSERT INTO employee (...) VALUES (...);
+
+READ:
+    SELECT * FROM employee;
+
+FILTER:
+    SELECT * FROM employee
+    WHERE salary > 40000;
+
+AND:
+    WHERE job = 'Developer'
+    AND salary > 40000;
+
+OR:
+    WHERE job = 'Developer'
+    OR job = 'Manager';
+
+SORT:
+    ORDER BY salary DESC;
+
+LIMIT:
+    LIMIT 3;
+
+UPDATE:
+    UPDATE employee
+    SET salary = 50000
+    WHERE empno = 101;
+
+DELETE:
+    DELETE FROM employee
+    WHERE empno = 101;
+
+COUNT:
+    SELECT COUNT(*) FROM employee;
+
+SUM:
+    SELECT SUM(salary) FROM employee;
+
+AVG:
+    SELECT AVG(salary) FROM employee;
+
+MAX:
+    SELECT MAX(salary) FROM employee;
+
+MIN:
+    SELECT MIN(salary) FROM employee;
+
+GROUP BY:
+    SELECT job, COUNT(*)
+    FROM employee
+    GROUP BY job;
+
+HAVING:
+    SELECT job, AVG(salary)
+    FROM employee
+    GROUP BY job
+    HAVING AVG(salary) > 50000;
+
+
+--------------------------------------------------------
+28. KEY THINGS TO REMEMBER
+--------------------------------------------------------
+
+1. SELECT = read data.
+2. INSERT = add rows.
+3. UPDATE = modify existing rows.
+4. DELETE = remove rows.
+5. WHERE = filter rows.
+6. AND = all conditions must be true.
+7. OR = at least one condition must be true.
+8. ORDER BY = sort results.
+9. LIMIT = restrict number of rows.
+10. COUNT/SUM/AVG/MAX/MIN = aggregate calculations.
+11. GROUP BY = create groups for aggregate calculations.
+12. HAVING = filter groups.
+13. WHERE comes before GROUP BY.
+14. HAVING comes after GROUP BY.
+15. Text values use quotes.
+16. DATE values use 'YYYY-MM-DD'.
+17. Numbers normally do not need quotes.
+18. Be careful with UPDATE and DELETE without WHERE.
