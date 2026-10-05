@@ -1,0 +1,15 @@
+SQL introduction:
+data = info about something
+database = where we're storing the data. why data when we have files? for organized manner.
+database management system = stores the data organized. multiple flavours. now we're using rdbms.
+rdbms data is stored in:
+--tables
+rules:
+--normalization
+--relationships
+--acid properties. Tools: MySQL, Oracle, SQL server, PostgreSql
+SQL language to interact with the tools.
+I'm using MySQL because: opensource, secured, multiple users can work on same database(client server), transaction management, recovery management
+--SQL
+create database company;
+use company;
