@@ -17,4 +17,21 @@ Special:
   set ex- fav_colors = set('red','blue','yellow','green') like square 
   json sending data from one application to another {"name":"raju"}
   
-  24.07
+DDL data defination language #structure
+  create, alter, drop, truncate
+    --creating table
+    create table employee(empno int, empname varchar(20));
+    -- adding salary column
+    alter table employee add salary decimal(9,2);
+DML data manipulation language #data
+  insert
+    insert into employee values(1,'raju',120000);
+    insert into employee values(2, 'siva'); #throws an error 
+    insert into employee(empname, empno, salary) values('anu',3,196000); #possible if order is specified
+    insert into employee(empno,empname,salary) values (
+TCL transaction control language #
+  commit; #(to store the data permanently)
+DCL data control language
+DQL data query langunage
+    select * from employee;
+    set autocommit=0; 
