@@ -1,0 +1,20 @@
+Datatypes:
+numeric:
+  int, bigint, tinyint, smallint, mediumint
+  float - (12.5), double - (12.7587438765980) greater than 7 decimal points, decimal - you know clearly how many digits are there after the point
+String:
+  char(1-255 chars) use with fixed length example empname char(10) or (255) 'raju' - 10 bytes
+  varchar(<=65000) for variable length empname varchar(1000) 'raju' = 4+2 = 6 bytes
+  text
+Date:
+  date - yyyy/mm/dd
+  time - hh24:mi:ss
+  datetime 
+Boolean:
+  1 (True), 0 (False)
+Special:
+  enum ex- gender:-  enum(m/f)
+  set ex- fav_colors = set('red','blue','yellow','green') like square 
+  json sending data from one application to another {"name":"raju"}
+  
+  24.07
