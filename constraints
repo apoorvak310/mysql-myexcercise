@@ -1,0 +1,47 @@
+Constraints = they restrict and validate the data we insert.
+1. Primary = no duplicates, no null
+2. Unique = can have null, no duplicattes
+3. Check = to keep a condition on a col
+4. Foreign key = parent and child key relationship
+5. Default = default value of a col
+6. Not null = doesnt allow null values
+
+*you cant compare with null. you should use 'is null' instead of '= null' *
+
+1. Primary = making entire record - unique identification
+example: empno
+primary key doesnt really need a contsraint name
+query-
+  alter table employee add constraint pk_empno
+  primary key(empno); 
+
+#to add a pk constraint, a column should obey/satisfy the constraints rules.
+if there are duplicates in a column, it doesnt allow to be a primary key.
+~ a table cannot have 2 primary keys
+
+check to see the stucture: desc employee;
+
+composite primary key = you can create primary key on top of multiple columns
+so to be it, the combination must be unique(1,raju)(1,mahesh), ~(1,raju)
+
+  alter table employee drop constraint primary key; # if there's only one primary key.
+  alter table employee add constraint pk_empno primary key(empno, empname); 
+
+2. Unique = allows null but no duplicates
+  example: email,mobile
+#2 two columns can be unique
+
+*quick way to create an email:
+  alter table employee add email varchar(30);
+~ update employee set email='raju@gmail.com' where empno = 1;
+  update employee set email=concat(empname,'@','gmail.com');*
+
+  alter table employee add constraint unq_email unique(email);
+update employee set email = null where empno = 7; #already null. accepted. 
+
+  alter table employee ad constraint unq_sal unique(salary);
+
+3. Check = based on a condition
+suppose, salary cannot be < 0 and > 300000
+alter table employee add constraint chk_salary check(salary <= 300000);
+
