@@ -1,0 +1,230 @@
+dbms = set of rules and predefined programs to store the data in an organized manner
+use django34;
+5 types commands.
+Category	Full Form	Main Commands
+1. DDL -	Data Definition Language -	CREATE, ALTER, DROP, TRUNCATE, RENAME
+2. DML -	Data Manipulation Language -	INSERT, UPDATE, DELETE
+3. DQL -	Data Query Language	- SELECT
+4. DCL	- Data Control Language -	GRANT, REVOKE
+5. TCL -	Transaction Control Language -	COMMIT, ROLLBACK, SAVEPOINT
+
+1.1 CREATE
+
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype
+);
+
+CREATE TABLE employees (
+    emp_id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department VARCHAR(50),
+    salary DECIMAL(10,2),
+    hire_date DATE,
+    city VARCHAR(50)
+);
+1.2 ALTER
+
+Used to modify an existing table's structure.
+It can be used to:
+- add a column
+- modify a column
+- rename a column
+- drop a column
+
+Add a column
+
+ALTER TABLE table_name
+ADD column_name datatype;
+
+ALTER TABLE employees
+ADD email VARCHAR(100);
+
+Modify a column
+
+Syntax
+ALTER TABLE table_name
+MODIFY COLUMN column_name new_datatype;
+
+Example
+ALTER TABLE employees
+MODIFY COLUMN salary DECIMAL(12,2);
+
+Rename a column
+In MySQL:
+Syntax
+ALTER TABLE table_name
+RENAME COLUMN old_name TO new_name;
+
+Example
+ALTER TABLE employees
+RENAME COLUMN city TO location;
+
+Drop a column
+Syntax
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+Example
+ALTER TABLE employees
+DROP COLUMN email;
+
+1.3 RENAME
+Used to change the name of a table.
+Syntax
+RENAME TABLE old_table_name
+TO new_table_name;
+
+Example
+RENAME TABLE employees
+TO company_employees;
+
+1.4 TRUNCATE
+Used to remove all records from a table while keeping the table structure.
+Syntax
+TRUNCATE TABLE table_name;
+
+Example
+TRUNCATE TABLE employees;
+
+1.5 DROP
+Used to completely remove a database object.
+Syntax
+DROP TABLE table_name;
+
+Example
+DROP TABLE employees;
+
+
+2. DML — Data Manipulation Language
+DML commands work with the data stored inside tables.
+DML Commands
+Command	Purpose
+INSERT	Adds records
+UPDATE	Modifies records
+DELETE	Removes records
+
+
+Notice the difference:
+DDL → structure of the table
+DML → data inside the table
+
+2.1 INSERT
+Used to add records to a table.
+Syntax
+INSERT INTO table_name
+(column1, column2, column3)
+VALUES
+(value1, value2, value3);
+
+Actual Query
+INSERT INTO employees
+(emp_id, first_name, last_name, department, salary, hire_date, city)
+VALUES
+(101, 'Rahul', 'Sharma', 'IT', 55000, '2023-01-15', 'Hyderabad');
+
+We can insert multiple rows too:
+INSERT INTO employees
+(emp_id, first_name, last_name, department, salary, hire_date, city)
+VALUES
+(102, 'Priya', 'Reddy', 'HR', 45000, '2022-06-20', 'Hyderabad'),
+(103, 'Arjun', 'Kumar', 'IT', 65000, '2021-03-10', 'Bangalore'),
+(104, 'Sneha', 'Rao', 'Finance', 60000, '2023-08-05', 'Chennai'),
+(105, 'Kiran', 'Singh', 'Sales', 50000, '2022-11-12', 'Hyderabad');
+
+2.2 UPDATE
+Used to modify existing records.
+Syntax
+UPDATE table_name
+SET column_name = new_value
+WHERE condition;
+
+Example
+UPDATE employees
+SET salary = 58000
+WHERE emp_id = 101;
+
+This changes Rahul's salary from 55000 to 58000.
+⚠️ Very important
+Never casually do:
+UPDATE employees
+SET salary = 58000;
+
+because every employee's salary will become 58000.
+The WHERE clause determines which rows are affected.
+2.3 DELETE
+Used to remove records.
+Syntax
+DELETE FROM table_name
+WHERE condition;
+
+Example
+DELETE FROM employees
+WHERE emp_id = 105;
+
+This removes Kiran's record.
+Again, be careful with:
+DELETE FROM employees;
+
+That deletes all rows, while the table itself remains.
+creating a duplicate table using an existing table
+create table employee_temp as select * from employee;
+
+3. DQL — Data Query Language
+DQL is used to retrieve data from a table.
+The primary command is:
+SELECT
+
+And honestly, this is where a large part of your SQL learning will happen.
+3.1 SELECT
+Syntax
+SELECT column1, column2
+FROM table_name;
+
+Example
+SELECT first_name, salary
+FROM employees;
+
+Result:
+Rahul   55000
+Priya   45000
+Arjun   65000
+Sneha   60000
+Kiran   50000
+
+To retrieve every column:
+Syntax
+SELECT *
+FROM table_name;
+
+Example
+SELECT *
+FROM employees;
+
+5. TCL — Transaction Control Language
+TCL controls transactions.
+Main commands:
+COMMIT
+ROLLBACK
+SAVEPOINT
+
+These become especially important when working with INSERT, UPDATE, and DELETE.
+COMMIT
+Permanently saves a transaction.
+COMMIT;
+
+ROLLBACK
+Undoes changes that haven't been committed.
+ROLLBACK;
+
+SAVEPOINT
+Creates a point that you can roll back to.
+SAVEPOINT savepoint_name;
+
+Example:
+SAVEPOINT before_update;
+
+Later:
+ROLLBACK TO before_update;
