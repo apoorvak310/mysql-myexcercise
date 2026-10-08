@@ -1,0 +1,162 @@
+SQL Introduction
+
+## 1. Data
+
+**Data** is information about something.
+
+Examples:
+- Employee name
+- Employee ID
+- Salary
+- Department
+- Phone number
+
+---
+
+## 2. Database
+
+A **database** is an organized collection of data.
+
+### Why do we need a database when we have files?
+
+Files can store data, but as the amount of data grows, managing it through files becomes difficult.
+
+A database helps us:
+- Store data in an organized manner
+- Search and retrieve data easily
+- Update data efficiently
+- Handle large amounts of data
+- Control access to data
+
+---
+
+## 3. DBMS — Database Management System
+
+A **DBMS** is software used to **store, organize, manage, and retrieve data** from databases.
+
+There are different types/flavours of DBMS.
+
+Examples:
+- MySQL
+- Oracle Database
+- Microsoft SQL Server
+- PostgreSQL
+
+---
+
+## 4. RDBMS — Relational Database Management System
+
+We are learning **RDBMS**.
+
+In an RDBMS, data is primarily stored in **tables** consisting of:
+
+- **Rows** → individual records
+- **Columns** → attributes/properties of the data
+
+RDBMS follows important concepts such as:
+
+### Normalization
+Organizing data to **reduce duplication and improve data consistency**.
+
+### Relationships
+Connecting related tables using keys such as **Primary Key and Foreign Key**.
+
+### ACID Properties
+Properties that help ensure reliable transactions:
+
+- **A — Atomicity**
+- **C — Consistency**
+- **I — Isolation**
+- **D — Durability**
+
+---
+
+## 5. SQL
+
+**SQL (Structured Query Language)** is a language used to **interact with relational databases**.
+
+Using SQL, we can:
+
+- Create databases and tables
+- Insert data
+- Retrieve data
+- Update data
+- Delete data
+- Manage database structures
+- Control transactions
+
+### Important distinction
+
+> **SQL is a language.**  
+> **MySQL, Oracle, SQL Server, and PostgreSQL are database systems/tools that use SQL.**
+
+---
+
+# 6. Why MySQL?
+
+We are using **MySQL** for learning SQL because it:
+
+- Is open-source
+- Supports secure database management
+- Supports multiple users
+- Uses a client-server architecture
+- Supports transaction management
+- Provides recovery mechanisms
+- Is widely used in real-world applications
+
+We will use **MySQL Workbench** as our graphical tool to interact with MySQL.
+
+---
+
+# 7. Getting Started with MySQL
+
+### Create a database
+
+```sql
+CREATE DATABASE company;
+```
+
+### Select the database
+
+```sql
+USE company;
+```
+
+After this, any tables we create will be created inside the `company` database.
+
+---
+
+### Quick Hierarchy
+
+```text
+DATA
+  ↓
+DATABASE
+  ↓
+DBMS
+  ↓
+RDBMS
+  ↓
+TABLES
+  ↓
+SQL
+  ↓
+MySQL / Oracle / SQL Server / PostgreSQL
+```
+
+**One correction to keep in your notes:** MySQL itself is the **RDBMS/database system**; **MySQL Workbench** is the graphical client/tool you use to interact with it.
+SQL introduction:
+data = info about something
+database = where we're storing the data. why data when we have files? for organized manner.
+database management system = stores the data organized. multiple flavours. now we're using rdbms.
+rdbms data is stored in:
+--tables
+rules:
+--normalization
+--relationships
+--acid properties. Tools: MySQL, Oracle, SQL server, PostgreSql
+SQL language to interact with the tools.
+I'm using MySQL because: opensource, secured, multiple users can work on same database(client server), transaction management, recovery management
+--SQL
+create database company;
+use company;
