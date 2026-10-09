@@ -1,0 +1,19 @@
+Insert, Update, Delete anomalies
+1NF -> each shell should have an atomic value. if it has, then divide it into rows. 3 values -> 3 rows
+2NF -> removes partial dependency, gives unique identification for each record
+partial dependency = (a column depending on another column)*(num > 1)
+full dependency = all columns depending on a single column
+
+customers table, products table, deliveryagents table
+if it should make any sense, there should be a relationship between these tables,
+there should be a RELATIONSHIP
+1. one to one
+ex: one record of one table = one record of another table. 
+1 customer = 1 order
+
+2. one to many
+ex: one customer = many orders
+
+3. many to many
+ex: one many students = many courses
+
