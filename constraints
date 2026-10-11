@@ -45,3 +45,24 @@ update employee set email = null where empno = 7; #already null. accepted.
 suppose, salary cannot be < 0 and > 300000
 alter table employee add constraint chk_salary check(salary <= 300000);
 
+4. foreign key = referential integrity.
+references another table while inserting/updating/deleting, only if there is a relation then it allows the crud operation
+
+parent + child
+we create fk for child table.
+alter table employee add constraint fk_deptno
+foreign key(deptid) references department(deptno);
+
+here department is parent table.
+
+update employee set deptid=1 where empno=2;
+update employee set deptid=10 where empno=2;#throws an error, because there's no deptid called 10.
+
+?on delete cascade: ON DELETE CASCADE automatically deletes the related rows in a child table
+when the referenced row in the parent table is deleted.
+Without ON DELETE CASCADE, MySQL normally prevents deleting 
+a department that still has employees referencing it.
+ON DELETE CASCADE vs ON DELETE SET NULL
+If department 10 is deleted, Ravi and Priya remain in the employees table, but their dept_id becomes NULL.
+?innodb: 
+
