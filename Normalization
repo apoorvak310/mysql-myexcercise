@@ -10,10 +10,18 @@ there should be a RELATIONSHIP
 1. one to one
 ex: one record of one table = one record of another table. 
 1 customer = 1 order
-
 2. one to many
 ex: one customer = many orders
-
 3. many to many
-ex: one many students = many courses
+ex: many students = many courses
+student table, course table, registration table, trainer table
 
+creating dept mysql
+create table department(deptno int primary key auto_increment, deptname varchar(20) not null, location varchar(20) not null
+head cnt int,
+constraint chk_loc check(location in ('hyderabad','bangalore','chennai')),constraint chk_headcnt > 0));
+
+insert into department(deptname,location,headcnt) values('development', 'hyd',5),('testing','chennai',3),('management','bangalore',10);
+alter table employee add deptid int;
+#have to add foreign key.
+#refer constraints
