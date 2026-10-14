@@ -1,0 +1,138 @@
+SQL numeric functions are built-in functions used to perform mathematical calculations on
+numeric values, such as rounding numbers, finding absolute values, and calculating powers or square roots.
+For example, suppose a product costs ₹249.678. You may want to round its price to ₹250 or display it as ₹249.68.
+Numeric functions help you do that.
+Important SQL numeric functions
+We'll use these functions in MySQL.
+
+1. ROUND() — Rounds a number
+Syntax: ROUND(number, decimals)
+SELECT ROUND(45.678, 2);
+-- Result: 45.68
+
+
+It rounds a number to the specified number of decimal places.
+SELECT ROUND(45.678);
+-- Result: 46
+
+
+Interview point: If the decimal argument is omitted, MySQL rounds to the nearest integer.
+
+
+
+
+2. CEIL() / CEILING() — Rounds upward
+Syntax: CEIL(number)
+SELECT CEIL(45.12);
+-- Result: 46
+
+
+It returns the smallest integer greater than or equal to the given number.
+SELECT CEIL(45.99);
+-- Result: 46
+
+
+Remember: It rounds toward positive infinity, not simply away from zero.
+
+
+
+
+3. FLOOR() — Rounds downward
+Syntax: FLOOR(number)
+SELECT FLOOR(45.99);
+-- Result: 45
+
+
+It returns the largest integer less than or equal to the given number.
+SELECT FLOOR(45.12);
+-- Result: 45
+
+
+Remember: FLOOR() rounds toward negative infinity.
+
+
+
+
+4. ABS() — Absolute value
+Syntax: ABS(number)
+SELECT ABS(-25);
+-- Result: 25
+
+
+It returns the non-negative magnitude of a number.
+SELECT ABS(25);
+-- Result: 25
+
+
+Interview example: Finding the magnitude of a difference between two values.
+
+
+
+
+5. MOD() — Remainder
+Syntax: MOD(number, divisor)
+SELECT MOD(10, 3);
+-- Result: 1
+
+
+It returns the remainder after division.
+SELECT MOD(10, 2);
+-- Result: 0
+
+
+Interview example: Checking whether a number is even or odd.
+SELECT MOD(7, 2);
+-- Result: 1 (odd)
+
+
+
+
+
+
+6. POWER() — Exponentiation
+Syntax: POWER(base, exponent)
+SELECT POWER(2, 3);
+-- Result: 8
+
+
+It raises the base to the specified exponent.
+\(2^3 = 2 \times 2 \times 2 = 8\)
+
+
+
+
+7. SQRT() — Square root
+Syntax: SQRT(number)
+SELECT SQRT(64);
+-- Result: 8
+
+
+It returns the square root of a non-negative number.
+
+
+
+
+8. TRUNCATE() — Removes decimal digits
+Syntax: TRUNCATE(number, decimals)
+SELECT TRUNCATE(45.678, 2);
+-- Result: 45.67
+
+
+It removes extra decimal places without rounding the number.
+SELECT TRUNCATE(45.678, 1);
+-- Result: 45.6
+
+
+Important: TRUNCATE() and ROUND() are different.
+
+
+
+
+9. SIGN() — Sign of a number
+Syntax: SIGN(number)
+SELECT SIGN(-25); -- -1
+SELECT SIGN(0);   --  0
+SELECT SIGN(25);  --  1
+
+
+It returns -1 for negative numbers, 0 for zero, and 1 for positive numbers.
