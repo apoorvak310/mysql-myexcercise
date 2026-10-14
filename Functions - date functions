@@ -1,0 +1,224 @@
+1. What are SQL date functions?
+Interview definition: SQL date functions are built-in functions used to retrieve, extract, manipulate, format, and calculate date and time values stored in a database.
+For example, suppose an employees table contains a joining_date. We might want to find the joining year, calculate an employee's experience, or display the date in a different format.
+2. Important SQL date functions in MySQL
+1. NOW() — Current date and time
+Returns the current date and time.
+SELECT NOW();
+
+
+Example output:
+2026-10-14 15:45:30
+
+
+The exact output depends on when you execute the query and the MySQL session's time zone.
+Interview question: What is the difference between NOW() and CURDATE()?
+2. CURDATE() — Current date
+Returns the current date without the time.
+SELECT CURDATE();
+
+
+Output:
+2026-10-14
+
+
+3. CURTIME() — Current time
+Returns the current time without the date.
+SELECT CURTIME();
+
+
+Example output:
+15:45:30
+
+
+Here's the difference at a glance:
+Function	Returns
+NOW()	Current date and time
+CURDATE()	Current date
+CURTIME()	Current time
+4. DATE() — Extract the date
+Extracts the date portion from a date-time value.
+SELECT DATE('2026-10-14 15:30:45');
+
+
+Output: 2026-10-14
+5. YEAR(), MONTH(), and DAY()
+These functions extract individual parts of a date.
+SELECT YEAR('2026-10-14');   -- 2026
+SELECT MONTH('2026-10-14');  -- 10
+SELECT DAY('2026-10-14');    -- 14
+
+
+You can also use them on a table column:
+SELECT employee_name, YEAR(joining_date)
+FROM employees;
+
+
+This retrieves each employee's name and joining year.
+6. DAYNAME() and MONTHNAME()
+These return the name of the weekday or month.
+SELECT DAYNAME('2026-10-14');
+-- Wednesday
+
+SELECT MONTHNAME('2026-10-14');
+-- October
+
+
+The returned names depend on MySQL's locale settings.
+7. DATEDIFF() — Difference between two dates
+Returns the difference between two dates in days. It subtracts the second date from the first date.
+SELECT DATEDIFF('2026-10-14', '2026-10-01');
+
+
+Output: 13
+Real-world example:
+SELECT
+    order_id,
+    DATEDIFF(delivery_date, order_date) AS delivery_days
+FROM orders;
+
+
+This calculates the number of days between an order and its delivery.
+Interview trap: DATEDIFF() ignores the time portion and returns a difference in days, not hours or minutes.
+8. DATE_ADD() — Add an interval to a date
+Adds a specified time interval to a date.
+SELECT DATE_ADD('2026-10-14', INTERVAL 7 DAY);
+
+
+Output: 2026-10-21
+Other examples:
+SELECT DATE_ADD('2026-10-14', INTERVAL 2 MONTH);
+SELECT DATE_ADD('2026-10-14', INTERVAL 1 YEAR);
+
+
+You can use intervals such as DAY, MONTH, YEAR, HOUR, and MINUTE.
+9. DATE_SUB() — Subtract an interval
+Subtracts a specified time interval from a date.
+SELECT DATE_SUB('2026-10-14', INTERVAL 7 DAY);
+
+
+Output: 2026-10-07
+Real-world use: Finding the date seven days before an order or identifying a past reporting period.
+10. DATE_FORMAT() — Format a date
+Displays a date in a specified format.
+SELECT DATE_FORMAT('2026-10-14', '%d-%m-%Y');
+
+
+Output: 14-10-2026
+Common format specifiers:
+Specifier	Meaning	Example
+%Y	Four-digit year	2026
+%y	Two-digit year	26
+%m	Month number	10
+%M	Full month name	October
+%d	Day of month	14
+%W	Full weekday name	Wednesday
+%H	Hour, 00–23	15
+%i	Minutes	45
+%s	Seconds	30
+Note: MySQL uses %i for minutes in DATE_FORMAT(), not %m, which represents the month.
+11. STR_TO_DATE() — Convert text into a date
+Converts a string into a date or date-time value using a specified format.
+SELECT STR_TO_DATE('14-10-2026', '%d-%m-%Y');
+
+
+Output: 2026-10-14
+Difference from DATE_FORMAT():
+- DATE_FORMAT() formats a date value as a string.
+- STR_TO_DATE() parses a string into a date or date-time value.
+12. LAST_DAY() — Last day of a month
+Returns the last calendar day of the month for a given date.
+SELECT LAST_DAY('2026-02-10');
+
+
+Output: 2026-02-28
+It also handles leap years. For example, February 2028 has 29 days.
+13. EXTRACT() — Extract a date part
+Extracts a specified component from a date or time value.
+SELECT EXTRACT(YEAR FROM '2026-10-14');
+-- 2026
+
+SELECT EXTRACT(MONTH FROM '2026-10-14');
+-- 10
+
+SELECT EXTRACT(DAY FROM '2026-10-14');
+-- 14
+
+
+It provides another way to extract parts of a date, similar to YEAR(), MONTH(), and DAY().
+
+3. Quick revision table
+Function	Purpose
+NOW()	Current date and time
+CURDATE()	Current date
+CURTIME()	Current time
+DATE()	Extract date portion
+YEAR() / MONTH() / DAY()	Extract date components
+DAYNAME() / MONTHNAME()	Get weekday or month name
+DATEDIFF()	Difference in days
+DATE_ADD()	Add an interval
+DATE_SUB()	Subtract an interval
+DATE_FORMAT()	Format a date as text
+STR_TO_DATE()	Parse text into a date value
+LAST_DAY()	Last day of the month
+EXTRACT()	Extract a specified date component
+4. Real-world interview queries
+Imagine you have an orders table with order_id, order_date, and delivery_date.
+Q1. Find orders placed in 2026.
+SELECT *
+FROM orders
+WHERE order_date >= '2026-01-01'
+  AND order_date < '2027-01-01';
+
+
+This range-based approach can use an index on order_date more effectively than applying YEAR() to every row.
+Q2. Find orders delivered within seven days.
+SELECT *
+FROM orders
+WHERE DATEDIFF(delivery_date, order_date) <= 7;
+
+
+This assumes both dates are populated and that you want to include any delivery completed in seven days or less.
+Q3. Find orders placed in the current month.
+SELECT *
+FROM orders
+WHERE order_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+  AND order_date < DATE_ADD(
+      DATE_FORMAT(CURDATE(), '%Y-%m-01'),
+      INTERVAL 1 MONTH
+  );
+
+
+This works for a DATE or DATETIME column and covers the current calendar month.
+Q4. Calculate a delivery deadline seven days after each order.
+SELECT
+    order_id,
+    order_date,
+    DATE_ADD(order_date, INTERVAL 7 DAY) AS deadline
+FROM orders;
+
+use employee;
+create table emp(eid int primary key auto_increment, ename varchar(20), esalary int, elocation varchar(10));
+insert into emp values(6,'vijay',89000,'chennai'),(1,'ramya',70000,'hyderabad'),(2,'ramesh',56000,'hyderabad'),(3,'ananth',89000,'bangalore'),(4,'archana',50000,'bangalore'),(5,'adithya',45000,'chennai');
+select * from emp;
+alter table emp add doj date;
+update emp set doj = '2020-02-18' where elocation = 'chennai';
+update emp set doj = '2017-03-10' where ename = 'archana';
+update emp set doj = '2023-07-22' where eid = 3;
+update emp set esalary = 192000 where ename = 'ramesh';
+update emp set doj = '2012-06-12' where ename = 'ramesh';
+
+select *,concat(round((datediff(curdate(),doj))/365),' year(s)') as experience from emp;
+
+with temp as(
+select ename, round(datediff(curdate(),doj)/365)*esalary as 'earned_salary' from emp)
+select sum(earned_salary) from tmp;
+
+WITH temp AS (
+    SELECT ename,
+           ROUND(DATEDIFF(CURDATE(), doj) / 365) * esalary
+           AS earned_salary
+    FROM emp
+)
+SELECT SUM(earned_salary)
+FROM temp;
